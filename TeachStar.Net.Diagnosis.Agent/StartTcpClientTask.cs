@@ -49,9 +49,10 @@ namespace TeachStar.Net.Diagnosis.Agent
                         {
                             try
                             {
-                                var message = Encoding.UTF8.GetBytes($"{inde}-->{DateTime.Now:O}");
+                                var str = $"{inde}-->{DateTime.Now:O}";
+                                var message = Encoding.UTF8.GetBytes(str);
                                 tcpClient.Client.Send(message);
-                                Console.WriteLine(message);
+                                Console.WriteLine(str);
                             }
                             catch (Exception e)
                             {
