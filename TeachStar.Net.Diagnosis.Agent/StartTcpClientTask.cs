@@ -49,20 +49,22 @@ namespace TeachStar.Net.Diagnosis.Agent
                         {
                             try
                             {
-                                tcpClient.Client.Send(Encoding.UTF8.GetBytes($"{inde}-->{DateTime.Now:O}"));
+                                var message = Encoding.UTF8.GetBytes($"{inde}-->{DateTime.Now:O}");
+                                tcpClient.Client.Send(message);
+                                Console.WriteLine(message);
                             }
-                            catch(Exception e)
+                            catch (Exception e)
                             {
                                 Console.ForegroundColor = ConsoleColor.Red;
                                 Console.WriteLine(e);
                                 Console.ResetColor();
                                 break;
                             }
-                        
+
                             Thread.Sleep(200);
                         }
                     });
-                  
+
                 }
             });
             waitor.WaitOne();
