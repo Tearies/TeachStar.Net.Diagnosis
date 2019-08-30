@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text;
 using TeachStar.Net.Diagnosis.Core.Helper;
 
 namespace TeachStar.Net.Diagnosis.Common.Net
@@ -9,6 +10,20 @@ namespace TeachStar.Net.Diagnosis.Common.Net
     {
 
         public static readonly string LocalHost = "127.0.0.1";
+
+        public static string LocalIpInfos()
+        {
+            StringBuilder sbuilder=new StringBuilder();
+            var localInfos = LocalNetDevice.RefreshNetInfos();
+            foreach (var localInfo in localInfos)
+            {
+                sbuilder.Append($" {localInfo.DeviceName}({localInfo.Ip}) ");
+            }
+
+            return sbuilder.ToString();
+        }
+        
+
         public static DiagnosisResult DiagnosisIpAddress(string ipAddress)
         {
             var localInfos = LocalNetDevice.RefreshNetInfos();

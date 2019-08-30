@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\publish\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -27,7 +27,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\publish\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -45,9 +45,20 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StartTcpServerTask.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TeachStar.Net.Diagnosis.Common\TeachStar.Net.Diagnosis.Common.csproj">
+      <Project>{d42cc993-bdf3-4628-b901-53cf36e77d99}</Project>
+      <Name>TeachStar.Net.Diagnosis.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TeachStar.Net.Diagnosis.Core\TeachStar.Net.Diagnosis.Core.csproj">
+      <Project>{19a5c03b-e942-4a7c-bce5-f352e5f1ff1c}</Project>
+      <Name>TeachStar.Net.Diagnosis.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

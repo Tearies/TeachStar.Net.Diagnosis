@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Runtime.ExceptionServices;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace TeachStar.Net.Diagnosis.Core.Session
 {
@@ -37,33 +39,51 @@ namespace TeachStar.Net.Diagnosis.Core.Session
 
         public void Run()
         {
-            try
-            {
-                internalTasks.ForEach(p =>
-                {
-                    p.Excute(this);
-                });
-            }
-            catch (Exception e)
-            {
-                if (internalExceptionHandler.Any())
-                {
-                    internalExceptionHandler.ForEach(p =>
-                    {
-                        try
-                        {
-                            if (p.HandleException(this, e))
-                            {
-                                return;
-                            }
-                        }
-                        catch (Exception x)
-                        {
-                            Console.WriteLine($"UnhandedException:{x}");
-                        }
-                    });
-                }
-            }
+            var waitor = new AutoResetEvent(false);
+            Thread workThread = new Thread((locker) =>
+           {
+               var templocker = (AutoResetEvent)locker;
+               try
+               {
+
+                   internalTasks.ForEach(p =>
+                   {
+                       p.Excute(this);
+                   });
+                   templocker.Set();
+               }
+               catch (Exception e)
+               {
+                   bool isHandled = false;
+                   if (internalExceptionHandler.Any())
+                   {
+                       foreach (var p in internalExceptionHandler)
+                       {
+                           try
+                           {
+                               isHandled = p.HandleException(this, e);
+                               if (isHandled)
+                               {
+                                   break;
+                               }
+                           }
+                           catch (Exception x)
+                           {
+                               Console.WriteLine($"UnhandedException:{x}");
+                           }
+                       }
+                   }
+                   if (!isHandled)
+                   {
+                       Console.WriteLine($"UnhandedException:{e}");
+                   }
+               }
+           });
+            workThread.SetApartmentState(ApartmentState.STA);
+            workThread.IsBackground = true;
+            workThread.Name = "WorkThread";
+            workThread.Start(waitor);
+            waitor.WaitOne();
         }
 
         #endregion

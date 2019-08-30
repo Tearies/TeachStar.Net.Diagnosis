@@ -1,4 +1,6 @@
-﻿namespace TeachStar.Net.Diagnosis.Core.Session
+﻿using System.Threading.Tasks;
+
+namespace TeachStar.Net.Diagnosis.Core.Session
 {
     public interface ISessionTask
     {
